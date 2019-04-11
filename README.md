@@ -9,21 +9,30 @@ The only difference between `SeparatedRow` and `Row` is the `separatorBuilder` p
 ```dart
 SeparatedRow(
   children: <Widget>[
-    ListTile(
-      title: Text("Item 1"),
+    IconButton(
+      onPressed: () {},
+      icon: Icon(Icons.favorite),
     ),
-    ListTile(
-      title: Text("Item 2"),
+    IconButton(
+      onPressed: () {},
+      icon: Icon(Icons.favorite_border),
     ),
-    ListTile(
-      title: Text("Item 3"),
+    IconButton(
+      onPressed: () {},
+      icon: Icon(Icons.check),
     ),
-    ListTile(
-      title: Text("Item 4"),
+    IconButton(
+      onPressed: () {},
+      icon: Icon(Icons.close),
     ),
   ],
   separatorBuilder: (BuildContext context, int index) {
-    return Divider();
+    return Container(
+      width: 1.0,
+      height: 15.0,
+      color: Colors.grey,
+    );
   },
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 )
 ```
