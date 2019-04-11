@@ -1,8 +1,7 @@
 # SeparatedRow
 
-[<img alt="Pub" src="https://img.shields.io/pub/v/separated_row.svg">](https://pub.dartlang.org/packages/separated_row)
-
 Flutter package for rendering separated Row children.
+This package is also available on [pub](https://pub.dartlang.org/packages/separated_row).
 
 ## Usage
 
