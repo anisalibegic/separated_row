@@ -13,33 +13,55 @@ The only difference between `SeparatedRow` and `Row` are `separatorBuilder` and 
 - `includeOuterSeparators` - Separators are added before the first and after the last element if true
 
 ```dart
-SeparatedRow(
-  children: <Widget>[
-    IconButton(
-      onPressed: () {},
-      icon: Icon(Icons.favorite),
-    ),
-    IconButton(
-      onPressed: () {},
-      icon: Icon(Icons.favorite_border),
-    ),
-    IconButton(
-      onPressed: () {},
-      icon: Icon(Icons.check),
-    ),
-    IconButton(
-      onPressed: () {},
-      icon: Icon(Icons.close),
-    ),
-  ],
-  separatorBuilder: (BuildContext context, int index) {
-    return Container(
-      width: 1.0,
-      height: 15.0,
-      color: Colors.grey,
-    );
-  },
-  includeOuterSeparators: false,
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+IntrinsicHeight(
+  child: SeparatedRow(
+    children: <Widget>[
+      Text("Item 1"),
+      Text("Item 2"),
+      Text("Item 3"),
+      Text("Item 4"),
+      Text("Item 5"),
+      Text("Item 6"),
+      Text("Item 7"),
+      Text("Item 8"),
+      Text("Item 9"),
+      Text("Item 10"),
+    ],
+    includeOuterSeparators: true,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    separatorBuilder: (BuildContext context, int index) => VerticalDivider(),
+  )
+)
+```
+is an equivalent of:
+
+```dart
+IntrinsicHeight(
+  child: Row(
+    children: <Widget>[
+      VerticalDivider(),
+      Text("Item 1"),
+      VerticalDivider(),
+      Text("Item 2"),
+      VerticalDivider(),
+      Text("Item 3"),
+      VerticalDivider(),
+      Text("Item 4"),
+      VerticalDivider(),
+      Text("Item 5"),
+      VerticalDivider(),
+      Text("Item 6"),
+      VerticalDivider(),
+      Text("Item 7"),
+      VerticalDivider(),
+      Text("Item 8"),
+      VerticalDivider(),
+      Text("Item 9"),
+      VerticalDivider(),
+      Text("Item 10"),
+      VerticalDivider(),
+    ],
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  )
 )
 ```
