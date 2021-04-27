@@ -33,7 +33,7 @@ IntrinsicHeight(
   )
 )
 ```
-is an equivalent of:
+Which is an equivalent of:
 
 ```dart
 IntrinsicHeight(
