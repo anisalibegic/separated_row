@@ -1,4 +1,4 @@
-## [3.0.1]
+## [3.0.2]
 
 * Upgrade Dart SDK constraints to `>=2.12.0 <4.0.0`
 
