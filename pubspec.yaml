@@ -15,3 +15,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+screenshots:
+  - description: Example showing basic functionalities.
+    path: screenshots/example.gif
