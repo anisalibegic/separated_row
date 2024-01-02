@@ -1,6 +1,6 @@
-## [3.0.0]
+## [3.0.1]
 
-* Upgrade to Flutter 3
+* Upgrade Dart SDK constraints to `>=2.12.0 <4.0.0`
 
 ## [2.0.0]
 
