@@ -1,10 +1,12 @@
 name: separated_row
 description: Flutter package for rendering Row widget that injects the separator in between the children.
-version: 2.0.0
+version: 3.0.0
 homepage: https://github.com/anisalibegic/separated_row
+repository: https://github.com/anisalibegic/separated_row
+issue_tracker: https://github.com/anisalibegic/separated_row/issues
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
   flutter:
