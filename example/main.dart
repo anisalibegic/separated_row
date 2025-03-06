@@ -21,7 +21,7 @@ class Application extends StatelessWidget {
 class HomePage extends StatelessWidget {
   final String title;
 
-  HomePage(this.title);
+  const HomePage(this.title, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,14 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: SeparatedRow(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          separatorBuilder: (BuildContext context, int index) {
+            return Container(
+              width: 1.0,
+              height: 15.0,
+              color: Colors.grey,
+            );
+          },
           children: <Widget>[
             IconButton(
               onPressed: () {},
@@ -49,14 +57,6 @@ class HomePage extends StatelessWidget {
               icon: Icon(Icons.close),
             ),
           ],
-          separatorBuilder: (BuildContext context, int index) {
-            return Container(
-              width: 1.0,
-              height: 15.0,
-              color: Colors.grey,
-            );
-          },
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         ),
       ),
     );

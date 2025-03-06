@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'outer_separator_mode.dart';
+
 /// A widget that arranges its children in a horizontal row with separators between them.
 ///
 /// The `SeparatedRow` widget takes a list of children and arranges them horizontally
 /// in a row, inserting separator widgets between each child based on the provided
 /// [separatorBuilder]. This allows for custom separators between children.
 ///
-/// The separators can be added at the outer edges of the row using the [includeOuterSeparators]
-/// property, which determines whether separators are placed before the first child and after
-/// the last child in the row.
+/// Using the [outerSeparatorMode] property, separators can be added at the start, end, or both
+/// outer edges of the row, determining whether separators are placed before the first child,
+/// after the last child, or both.
 ///
 /// Example usage:
 /// ```dart
 /// SeparatedRow(
-///   includeOuterSeparators: true,
+///   outerSeparatorMode: OuterSeparatorMode.both,
 ///   separatorBuilder: (BuildContext context, int index) {
 ///     return Container(
 ///       width: 2,
@@ -32,6 +34,16 @@ import 'package:flutter/material.dart';
 /// and [textBaseline] can be used to customize the alignment and layout of its children
 /// and separators within the row.
 class SeparatedRow extends StatelessWidget {
+  /// Specifies where separators should be added in the row.
+  ///
+  /// If `outerSeparatorMode` is:
+  /// - `OuterSeparatorMode.start`: Adds a separator before the first child.
+  /// - `OuterSeparatorMode.end`: Adds a separator after the last child.
+  /// - `OuterSeparatorMode.both`: Adds separators both before the first and after the last child.
+  ///
+  /// Defaults to `null`, meaning no outer separators are added.
+  final OuterSeparatorMode? outerSeparatorMode;
+
   /// Whether to include separators at the outer edges of the row.
   ///
   /// If set to true, this will add separator widgets before the first child
@@ -39,6 +51,7 @@ class SeparatedRow extends StatelessWidget {
   /// the [separatorBuilder].
   ///
   /// Defaults to false.
+  @Deprecated('Deprecated. Use `outerSeparatorMode: OuterSeparatorMode.both` instead.')
   final bool includeOuterSeparators;
 
   /// A builder that creates separators to be placed between children in the row.
@@ -62,57 +75,6 @@ class SeparatedRow extends StatelessWidget {
   final IndexedWidgetBuilder separatorBuilder;
 
   /// The widgets below this widget in the tree.
-  ///
-  /// If this list is going to be mutated, it is usually wise to put a [Key] on
-  /// each of the child widgets, so that the framework can match old
-  /// configurations to new configurations and maintain the underlying render
-  /// objects.
-  ///
-  /// Also, a [Widget] in Flutter is immutable, so directly modifying the
-  /// [children] such as `someMultiChildRenderObjectWidget.children.add(...)` or
-  /// as the example code below will result in incorrect behaviors. Whenever the
-  /// children list is modified, a new list object should be provided.
-  ///
-  /// ```dart
-  /// // This code is incorrect.
-  /// class SomeWidgetState extends State<SomeWidget> {
-  ///   final List<Widget> _children = <Widget>[];
-  ///
-  ///   void someHandler() {
-  ///     setState(() {
-  ///       _children.add(const ChildWidget());
-  ///     });
-  ///   }
-  ///
-  ///   @override
-  ///   Widget build(BuildContext context) {
-  ///     // Reusing `List<Widget> _children` here is problematic.
-  ///     return Row(children: _children);
-  ///   }
-  /// }
-  /// ```
-  ///
-  /// The following code corrects the problem mentioned above.
-  ///
-  /// ```dart
-  /// class SomeWidgetState extends State<SomeWidget> {
-  ///   final List<Widget> _children = <Widget>[];
-  ///
-  ///   void someHandler() {
-  ///     setState(() {
-  ///       // The key here allows Flutter to reuse the underlying render
-  ///       // objects even if the children list is recreated.
-  ///       _children.add(ChildWidget(key: UniqueKey()));
-  ///     });
-  ///   }
-  ///
-  ///   @override
-  ///   Widget build(BuildContext context) {
-  ///     // Always create a new list of children as a Widget is immutable.
-  ///     return Row(children: _children.toList());
-  ///   }
-  /// }
-  /// ```
   final List<Widget> children;
 
   /// If aligning items according to their baseline, which baseline to use.
@@ -199,6 +161,7 @@ class SeparatedRow extends StatelessWidget {
 
   /// Creates a horizontal array of children with separators between each item.
   ///
+  /// The [outerSeparatorMode] controls whether separators are added at the start, end, or both.
   /// If [crossAxisAlignment] is [CrossAxisAlignment.baseline], then
   /// [textBaseline] must not be null.
   ///
@@ -210,49 +173,51 @@ class SeparatedRow extends StatelessWidget {
   /// must not be null.
   const SeparatedRow({
     Key? key,
-    this.textBaseline,
-    this.textDirection,
+    required this.separatorBuilder,
     this.children = const <Widget>[],
-    this.includeOuterSeparators = false,
     this.mainAxisSize = MainAxisSize.max,
     this.verticalDirection = VerticalDirection.down,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
-    required this.separatorBuilder,
-  }) : super(key: key);
+    this.textBaseline,
+    this.textDirection,
+    OuterSeparatorMode? outerSeparatorMode,
+    @Deprecated('Use `outerSeparatorMode: OuterSeparatorMode.both`.') this.includeOuterSeparators = false,
+  })  : outerSeparatorMode = includeOuterSeparators ? OuterSeparatorMode.both : outerSeparatorMode,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final children = <Widget>[];
-    final index = this.includeOuterSeparators ? 1 : 0;
+    final rowChildren = <Widget>[];
+    int separatorIndex = 0; // Ensure separator indices start from 0
 
-    if (this.children.isNotEmpty) {
-      if (this.includeOuterSeparators) {
-        children.add(separatorBuilder(context, 0));
-      }
+    // Add a separator at the start if needed
+    if (outerSeparatorMode == OuterSeparatorMode.start || outerSeparatorMode == OuterSeparatorMode.both) {
+      rowChildren.add(separatorBuilder(context, separatorIndex++));
+    }
 
-      for (int i = 0; i < this.children.length; i++) {
-        children.add(this.children[i]);
+    for (int i = 0; i < children.length; i++) {
+      rowChildren.add(children[i]);
 
-        if (this.children.length - i != 1) {
-          children.add(separatorBuilder(context, i + index));
-        }
-      }
-
-      if (this.includeOuterSeparators) {
-        children.add(separatorBuilder(context, this.children.length));
+      if (i < children.length - 1) {
+        rowChildren.add(separatorBuilder(context, separatorIndex++));
       }
     }
 
+    // Add a separator at the end if needed
+    if (outerSeparatorMode == OuterSeparatorMode.end || outerSeparatorMode == OuterSeparatorMode.both) {
+      rowChildren.add(separatorBuilder(context, separatorIndex++));
+    }
+
     return Row(
-      key: this.key,
-      children: children,
-      mainAxisSize: this.mainAxisSize,
-      textBaseline: this.textBaseline,
-      textDirection: this.textDirection,
-      verticalDirection: this.verticalDirection,
-      mainAxisAlignment: this.mainAxisAlignment,
-      crossAxisAlignment: this.crossAxisAlignment,
+      key: key,
+      mainAxisSize: mainAxisSize,
+      textBaseline: textBaseline,
+      textDirection: textDirection,
+      verticalDirection: verticalDirection,
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
+      children: rowChildren,
     );
   }
 }
